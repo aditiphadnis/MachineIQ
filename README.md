@@ -1,5 +1,7 @@
 # MachineIQ — Predictive Maintenance Dashboard
 
+**🔗 Live demo: [machine-iq.vercel.app](https://machine-iq.vercel.app/)**
+
 An interactive, browser-based dashboard for exploring and analysing the **AI4I 2020 Predictive Maintenance Dataset**. Built with React and Recharts, it demonstrates how sensor data from CNC milling machines can be visualised to surface failure patterns, risk signals, and operational insights.
 
 > **For demonstration purposes only.** This project uses a publicly available research dataset and is not intended for production use.
