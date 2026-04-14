@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Cell,
@@ -334,8 +334,8 @@ export default function DataInsights({ data }) {
             ))}
 
             {CORR_FIELDS.map(({ label: rowLabel }, i) => (
-              <>
-                <div key={`row-${i}`} style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: 8, height: 52 }}>
+              <React.Fragment key={`frag-${i}`}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: 8, height: 52 }}>
                   <span style={{ fontSize: 10, fontWeight: 600, color: "var(--text-muted)", whiteSpace: "nowrap" }}>
                     {rowLabel}
                   </span>
@@ -365,7 +365,7 @@ export default function DataInsights({ data }) {
                     </div>
                   );
                 })}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>
