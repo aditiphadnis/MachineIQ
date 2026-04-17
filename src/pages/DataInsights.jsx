@@ -183,7 +183,7 @@ export default function DataInsights({ data }) {
         <p style={{ fontSize: 11, fontWeight: 700, color: "#378ADD", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
           The story in three numbers
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+        <div className="grid-3" style={{ gap: 20 }}>
           {[
             {
               stat: "80%",
@@ -223,13 +223,13 @@ export default function DataInsights({ data }) {
           Sensor distributions split by outcome. The IQR box marks the middle 50% of runs; the vertical line is the median.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        <div className="grid-2-lg">
           {distStats.map(({ field, title, unit, groups }) => (
             <div key={field}>
               <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 14, textAlign: "center" }}>
                 {title}
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="grid-2-sm">
                 {groups.map(({ label, color, min, q1, med, q3, max, barLeft, barWidth, medLeft }) => (
                   <div key={label} style={{ background: "var(--bg)", borderRadius: 10, padding: "12px 14px", border: `1px solid ${color}33` }}>
                     <div style={{ fontSize: 12, fontWeight: 700, color, marginBottom: 10 }}>{label}</div>
@@ -411,7 +411,7 @@ export default function DataInsights({ data }) {
         <p style={{ fontSize: 11, fontWeight: 700, color: "#1D9E75", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
           Bottom line — three rules, one policy
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div className="grid-3">
           {[
             { rule: "Replace tools at 150 min", why: "Failure rate spikes sharply after this point. A hard replacement schedule eliminates most TWF and OSF incidents at minimal production cost.", color: "#E24B4A" },
             { rule: "Alert on torque > 65 Nm", why: "The Q3 for failed runs. Anything above this is in the top quartile of failure-linked readings. A software alert costs nothing to add.", color: "#EF9F27" },

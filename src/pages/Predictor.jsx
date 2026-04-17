@@ -258,7 +258,7 @@ export default function Predictor({ data }) {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div className="predictor-split">
 
         {/* LEFT PANEL: Inputs */}
         <div>
@@ -335,7 +335,7 @@ export default function Predictor({ data }) {
                     </div>
 
                     {/* Metric tiles */}
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 12 }}>
+                    <div className="grid-3" style={{ marginTop: 12 }}>
                       <MetricTile label="Air temp"     value={airTemp}          unit="K"   color="#378ADD" />
                       <MetricTile label="Process temp" value={procTemp}         unit="K"   color="#5DCAA5" />
                       <MetricTile label="RPM"          value={rpm}              unit="rpm" color="#7F77DD" warning={rpm < 1380} />
@@ -434,7 +434,7 @@ export default function Predictor({ data }) {
               <SliderRow label="Tool wear"         unit="min" min={0}    max={250}  step={1}   value={wear}    onChange={setWear}    color="#E24B4A" />
 
               {/* Derived values */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 4 }}>
+              <div className="grid-2-sm" style={{ marginTop: 4 }}>
                 {[
                   ["Calculated power", `${prediction.power} W`, prediction.power < 3500 || prediction.power > 9000 ? "#E24B4A" : "#1D9E75"],
                   ["Temp difference (ΔT)", `${prediction.deltaT} K`, parseFloat(prediction.deltaT) < 8.6 ? "#E24B4A" : "#1D9E75"],

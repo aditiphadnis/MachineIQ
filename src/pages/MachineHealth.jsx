@@ -116,7 +116,7 @@ export default function MachineHealth({ data }) {
       </div>
 
       {/* Summary strip */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
+      <div className="grid-4" style={{ marginBottom: 20 }}>
         {[
           ["Healthy", counts.Healthy, "#1D9E75"],
           ["Warning", counts.Warning, "#EF9F27"],
@@ -159,7 +159,7 @@ export default function MachineHealth({ data }) {
               </div>
 
               {/* Cards grid for this type */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+              <div className="grid-3">
                 {group.map((m) => (
                   <div
                     key={m.id}

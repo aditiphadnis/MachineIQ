@@ -110,7 +110,7 @@ export default function Sensors({ data }) {
       </div>
 
       {/* CHARTS ROW 1 */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+      <div className="grid-2" style={{ marginBottom: 16 }}>
 
         {/* Air temperature distribution */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px" }}>

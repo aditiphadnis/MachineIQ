@@ -91,7 +91,7 @@ export default function Overview({ stats, data }) {
 
       {/* ---- KPI CARDS ROW ---- */}
       {/* CSS grid: 4 equal columns */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+      <div className="grid-4" style={{ marginBottom: 20 }}>
         <KpiCard
           label="Total machine runs"
           value={stats.total.toLocaleString()}
@@ -121,7 +121,7 @@ export default function Overview({ stats, data }) {
       </div>
 
       {/* ---- CHARTS ROW 1 ---- */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+      <div className="grid-2" style={{ marginBottom: 16 }}>
 
         {/* CHART 1: Failure modes bar chart */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px" }}>
@@ -199,7 +199,7 @@ export default function Overview({ stats, data }) {
       </div>
 
       {/* ---- CHARTS ROW 2 ---- */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div className="grid-2">
 
         {/* CHART 3: Failures by product type */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px" }}>

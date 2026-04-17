@@ -62,6 +62,59 @@ const CSS_VARS = `
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+
+  /* ── Responsive grid utilities ─────────────────────────────── */
+  .grid-4  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .grid-3  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid-2  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-2-sm { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-2-lg { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .predictor-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* ── Mobile nav drawer ─────────────────────────────────────── */
+  .mobile-header {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: 52px;
+    background: var(--sidebar-bg);
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.5);
+  }
+  .nav-drawer {
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 400;
+    width: 260px;
+    background: var(--sidebar-bg);
+    display: flex; flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+  }
+  .nav-drawer.open { transform: translateX(0); }
+
+  @media (max-width: 768px) {
+    .desktop-sidebar  { display: none !important; }
+    .mobile-header    { display: flex; }
+    .app-main         { padding: 72px 16px 24px !important; }
+
+    .grid-4           { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3           { grid-template-columns: 1fr; }
+    .grid-2           { grid-template-columns: 1fr; }
+    .grid-2-sm        { grid-template-columns: 1fr; }
+    .grid-2-lg        { grid-template-columns: 1fr; gap: 16px; }
+    .predictor-split  { grid-template-columns: 1fr; }
+  }
+
+  @media (min-width: 769px) {
+    .nav-overlay, .nav-drawer { display: none !important; }
+    .mobile-header { display: none !important; }
+  }
 `;
 
 // Navigation items — each has an id, label, and icon character
@@ -129,6 +182,7 @@ export default function App() {
   const [activePage, setActivePage] = useState("overview");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     loadDataset().then((rows) => {
@@ -174,22 +228,84 @@ export default function App() {
     );
   }
 
+  function navigate(id) {
+    setActivePage(id);
+    setDrawerOpen(false);
+  }
+
   return (
     <>
       {/* Inject CSS variables into the page */}
       <style>{CSS_VARS}</style>
 
+      {/* ── Mobile top header ── */}
+      <header className="mobile-header">
+        <button
+          onClick={() => setDrawerOpen(true)}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "#fff", fontSize: 20, lineHeight: 1 }}
+          aria-label="Open menu"
+        >☰</button>
+        <div style={{ fontSize: 15, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>MachineIQ</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: "auto" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1D9E75", animation: "pulse 2s infinite" }} />
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>Live</span>
+        </div>
+      </header>
+
+      {/* ── Mobile nav overlay ── */}
+      <div className={`nav-overlay${drawerOpen ? "" : " hidden"}`}
+        style={{ display: drawerOpen ? "block" : "none" }}
+        onClick={() => setDrawerOpen(false)}
+      />
+
+      {/* ── Mobile nav drawer ── */}
+      <nav className={`nav-drawer${drawerOpen ? " open" : ""}`}>
+        <div style={{ padding: "20px 20px 14px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <div style={{ fontSize: 15, fontWeight: 800, color: "#fff" }}>MachineIQ</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>Predictive Maintenance</div>
+          </div>
+          <button onClick={() => setDrawerOpen(false)}
+            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 20, cursor: "pointer", padding: 4 }}>✕</button>
+        </div>
+        <div style={{ padding: "10px 0", flex: 1 }}>
+          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", padding: "4px 20px 8px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+            Navigation
+          </div>
+          {NAV_ITEMS.map((item) => {
+            const isActive = activePage === item.id;
+            return (
+              <button key={item.id} onClick={() => navigate(item.id)}
+                style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  width: "100%", padding: "11px 20px",
+                  background: isActive ? "var(--sidebar-active-bg)" : "transparent",
+                  border: "none",
+                  borderLeft: `2px solid ${isActive ? "#378ADD" : "transparent"}`,
+                  color: isActive ? "#fff" : "var(--sidebar-text)",
+                  fontSize: 14, fontWeight: isActive ? 600 : 400,
+                  cursor: "pointer", textAlign: "left",
+                }}>
+                <span style={{ fontSize: 15, opacity: isActive ? 1 : 0.6 }}>{item.icon}</span>
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+        <DatasetFooter />
+      </nav>
+
       {/* APP SHELL: sidebar + main area side by side */}
       <div style={{ display: "flex", minHeight: "100vh" }}>
 
-        {/* ===== SIDEBAR ===== */}
-        <aside style={{
+        {/* ===== SIDEBAR (desktop only) ===== */}
+        <aside className="desktop-sidebar" style={{
           width: 220,
           background: "var(--sidebar-bg)",
           display: "flex",
           flexDirection: "column",
           flexShrink: 0,
-          position: "sticky",   // stays fixed as you scroll the main content
+          position: "sticky",
           top: 0,
           height: "100vh",
           overflowY: "auto",
@@ -253,7 +369,7 @@ export default function App() {
         </aside>
 
         {/* ===== MAIN CONTENT ===== */}
-        <main style={{ flex: 1, padding: "28px 32px", overflowY: "auto", minWidth: 0 }}>
+        <main className="app-main" style={{ flex: 1, padding: "28px 32px", overflowY: "auto", minWidth: 0 }}>
           {/* key={activePage} forces a remount on navigation, triggering the fade-in animation */}
           <div key={activePage} className="page-content">
             {renderPage()}
